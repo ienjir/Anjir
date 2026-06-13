@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@angular/build": "^21.2.1",
+    "@netlify/angular-runtime": "^4.0.0",
     "@angular/cli": "^21.2.1",
     "@angular/compiler-cli": "^21.2.0",
     "@types/express": "^5.0.1",
