@@ -22,6 +22,8 @@
         "@angular/build": "^21.2.1",
         "@angular/cli": "^21.2.1",
         "@angular/compiler-cli": "^21.2.0",
+        "@angular/language-service": "^22.0.1",
+        "@netlify/angular-runtime": "^4.0.0",
         "@types/express": "^5.0.1",
         "@types/node": "^20.17.19",
         "jsdom": "^28.0.0",
@@ -83,6 +85,8 @@
     "@angular/core": ["@angular/core@21.2.17", "", { "dependencies": { "tslib": "^2.3.0" }, "peerDependencies": { "@angular/compiler": "21.2.17", "rxjs": "^6.5.3 || ^7.4.0", "zone.js": "~0.15.0 || ~0.16.0" }, "optionalPeers": ["@angular/compiler", "zone.js"] }, "sha512-wYHpwIdnUnjQFOJJNqRcGx7LS3u64jT+R9L0TnMR/ViBM9dQgGYImlSikkftg2yrFCNo5aKRxhG2LLskQurVdg=="],
 
     "@angular/forms": ["@angular/forms@21.2.17", "", { "dependencies": { "@standard-schema/spec": "^1.0.0", "tslib": "^2.3.0" }, "peerDependencies": { "@angular/common": "21.2.17", "@angular/core": "21.2.17", "@angular/platform-browser": "21.2.17", "rxjs": "^6.5.3 || ^7.4.0" } }, "sha512-WKu8XeRSNZo+a+aDDZ3M5OtReF7KYqR/PmZ2l1lSf6N5EEAmc+Ky4aqbRhTL/mTSfHrO4+TDJ4C5A2tFmuwIeA=="],
+
+    "@angular/language-service": ["@angular/language-service@22.0.1", "", {}, "sha512-qbHtMARISHxLgGmQyMyLBRGA7IUWbTyjpnWysJAOoNiAYOSkIGTTTTLi5Pu6ifuSfG5qdovNxiAzCeEH+xrXIw=="],
 
     "@angular/platform-browser": ["@angular/platform-browser@21.2.17", "", { "dependencies": { "tslib": "^2.3.0" }, "peerDependencies": { "@angular/animations": "21.2.17", "@angular/common": "21.2.17", "@angular/core": "21.2.17" }, "optionalPeers": ["@angular/animations"] }, "sha512-ROdSliejY37g1EphYmweYdm5cHM8HY3X4tbWt4ubxmhTyYgfN3nxrxfGQ/n7Mz5tDY9VXVLIGDgjLOGYOo4uTQ=="],
 
@@ -329,6 +333,12 @@
     "@napi-rs/nice-win32-x64-msvc": ["@napi-rs/nice-win32-x64-msvc@1.1.1", "", { "os": "win32", "cpu": "x64" }, "sha512-vB+4G/jBQCAh0jelMTY3+kgFy00Hlx2f2/1zjMoH821IbplbWZOkLiTYXQkygNTzQJTq5cvwBDgn2ppHD+bglQ=="],
 
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@1.1.5", "", { "dependencies": { "@tybys/wasm-util": "^0.10.2" }, "peerDependencies": { "@emnapi/core": "^1.7.1", "@emnapi/runtime": "^1.7.1" } }, "sha512-AWPoBRJ9tsnVhor4sjO7rkni+7p+2IAEFj6cx06UgP10jkQHqay/36uRV/bFkgrh18D9vb4cr8Q0Pthskgzy+Q=="],
+
+    "@netlify/angular-runtime": ["@netlify/angular-runtime@4.0.0", "", { "dependencies": { "@netlify/edge-functions": "^3.0.8", "semver": "^7.8.0" } }, "sha512-VrFrzw0MbLWLCG853dJM5gHDg2uRMBWuedEb1DfLDNyja/dQnmQTMPE2ke9QTbebFA01T0aynM0aeU7DyinPOQ=="],
+
+    "@netlify/edge-functions": ["@netlify/edge-functions@3.0.8", "", { "dependencies": { "@netlify/types": "2.8.0" } }, "sha512-ml1oCDsRTTRmZS2nUj8XRD1b6+foEiZT3lPk7qQ4nv/jnxylHJ20ooPzPDH+cJmGjXFrMeR14/91W1o6D2ftBg=="],
+
+    "@netlify/types": ["@netlify/types@2.8.0", "", {}, "sha512-8/g0Pt6y6wXj5Ia5eeYLiXhRfWeqZXGXpGFeCiiQdUOem+FPtXdA4+YdGxqzWc7D0AvptKSO01KGeeVWHSu8Kg=="],
 
     "@npmcli/agent": ["@npmcli/agent@4.0.2", "", { "dependencies": { "agent-base": "^7.1.0", "http-proxy-agent": "^7.0.0", "https-proxy-agent": "^7.0.1", "lru-cache": "^11.2.1", "socks-proxy-agent": "^8.0.3" } }, "sha512-EUEuWAxnL07Sp5/iC/1X6Xj+XThUvnbei9zfRWZdEXa7lss9RTHMhAHBeg+MZ5To9s/gGaSI+UwZTPdYMvKSeg=="],
 
@@ -1133,6 +1143,8 @@
     "@babel/helper-compilation-targets/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
 
     "@inquirer/core/wrap-ansi": ["wrap-ansi@6.2.0", "", { "dependencies": { "ansi-styles": "^4.0.0", "string-width": "^4.1.0", "strip-ansi": "^6.0.0" } }, "sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA=="],
+
+    "@netlify/angular-runtime/semver": ["semver@7.8.4", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-rUCObTnP32Q08R2uuIrt7r9PlEonuTmtuXYcW6s5kjdlj3xbnwe+21yXptAUYcMAABLkYYTtnmzb3w3EDZfueA=="],
 
     "@npmcli/git/which": ["which@6.0.1", "", { "dependencies": { "isexe": "^4.0.0" }, "bin": { "node-which": "bin/which.js" } }, "sha512-oGLe46MIrCRqX7ytPUf66EAYvdeMIZYn3WaocqqKZAxrBpkqHfL/qvTyJ/bTk5+AqHCjXmrv3CEWgy368zhRUg=="],
 

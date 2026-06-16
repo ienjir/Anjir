@@ -15,17 +15,17 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@/*": ["*"],
-      "@app/*": ["app/*"],
-      "@shared/*": ["app/shared/*"],
-      "@core/*": ["app/core/*"],
-      "@features/*": ["app/features/*"],
-      "@environments/*": ["environments/*"],
-      "@components/*": ["app/components/*"],
-      "@layouts/*": ["app/layouts/*"],
-      "@interfaces/*": ["app/core/interfaces/*"],
-      "@interceptors/*": ["app/core/interceptors/*"],
-      "@services/*": ["app/core/services/*"]
+      "@/*": ["./*"],
+      "@app/*": ["./app/*"],
+      "@shared/*": ["./app/shared/*"],
+      "@core/*": ["./app/core/*"],
+      "@features/*": ["./app/features/*"],
+      "@environments/*": ["./environments/*"],
+      "@components/*": ["./app/components/*"],
+      "@layouts/*": ["./app/layouts/*"],
+      "@interfaces/*": ["./app/core/interfaces/*"],
+      "@interceptors/*": ["./app/core/interceptors/*"],
+      "@services/*": ["./app/core/services/*"]
     }
   },
   "angularCompilerOptions": {

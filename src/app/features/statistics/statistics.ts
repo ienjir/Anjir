@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './statistics.html',
   styleUrl: './statistics.scss',
 })
-export class Statistics {}
+export default class Statistics {}
