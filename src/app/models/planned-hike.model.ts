@@ -1,7 +1,7 @@
 import { Difficulty } from "./hike.model"
 
 export interface PlannedHike {
-  id?: number
+  id: number
   name: string
   description?: string
   notes?: string

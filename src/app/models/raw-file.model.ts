@@ -1,7 +1,7 @@
 export type RawFileType = 'gpx' | 'fit';
 
 export interface RawFile {
-  id?: number
+  id: number
   hikeId: number
   type: RawFileType
   filename: string

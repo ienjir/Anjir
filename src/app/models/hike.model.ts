@@ -1,8 +1,19 @@
-export type Difficulty = 'easy' | 'moderate' | 'hard' | 'expert';
-export type HikeSource = 'gpx' | 'fit' | 'gpx+fit' | 'manual';
+export enum HikeSource {
+  gpx,
+  fit,
+  gpx_fit,
+  manual,
+}
+
+export enum Difficulty {
+  easy,
+  moderate,
+  hard,
+  expert,
+}
 
 export interface Hike {
-  id?: string
+  id: number,
   name: string
   difficulty?: Difficulty
   date: Date
@@ -17,11 +28,11 @@ export interface Hike {
   fitFileId?: string
   trackId?: string
   createdAt: Date
-  updatedAt: Date
+  updatedAt?: Date
 }
 
 
-interface HikeStats {
+export interface HikeStats {
   distanceMeters: number
   durationSeconds: number
   elevationGainMeters: number
