@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
 $color-bg: #F2F0EB;
 $color-bg-subtle: #FFFFFF;
 $color-bg-muted: #E7E3DA;
@@ -18,3 +20,52 @@ $color-success: #45A16B;
 $color-warning: #D48D11;
 $color-danger: #BD3228;
 $color-info: #3075A6;
+
+$font-stack: Outfit, sans-serif;
+
+body {
+  font: 100% $font-stack;
+  color: $color-primary;
+}
+
+h1 {
+  font-size: 3.25rem;
+  font-weight: 800;
+  line-height: 105%;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 120%;
+}
+
+h3 {
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 130%;
+}
+
+p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 160%;
+}
+
+.body-small {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 160%;
+}
+
+.metric-large {
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 160%;
+}
+
+.metric-large {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 110%;
+}
