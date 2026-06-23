@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HikeDetail } from './hike-detail';
+import HikeDetail from './hike-detail';
 
 describe('HikeDetail', () => {
   let component: HikeDetail;
@@ -13,10 +12,16 @@ describe('HikeDetail', () => {
 
     fixture = TestBed.createComponent(HikeDetail);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('p')?.textContent).toContain('hike-detail works!');
   });
 });

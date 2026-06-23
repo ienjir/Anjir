@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { Statistics } from './statistics';
+import Statistics from './statistics';
 
 describe('Statistics', () => {
   let component: Statistics;
@@ -13,10 +12,16 @@ describe('Statistics', () => {
 
     fixture = TestBed.createComponent(Statistics);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('p')?.textContent).toContain('statistics works!');
   });
 });
