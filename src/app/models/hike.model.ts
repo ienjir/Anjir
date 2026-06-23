@@ -31,7 +31,6 @@ export interface Hike {
   updatedAt?: Date
 }
 
-
 export interface HikeStats {
   distanceMeters: number
   durationSeconds: number
