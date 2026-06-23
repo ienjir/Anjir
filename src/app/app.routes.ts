@@ -29,8 +29,4 @@ export const routes: Routes = [
     path: "statistiken",
     loadComponent: () => import('./features/hike-create/hike-create')
   },
-  {
-    path: "maintenance",
-    loadComponent: () => import('./features/maintenance/maintenance')
-  },
 ];

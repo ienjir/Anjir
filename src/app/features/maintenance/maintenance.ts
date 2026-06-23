@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './maintenance.html',
   styleUrl: './maintenance.scss',
 })
-export default class Maintenance {}
+export class Maintenance {}

@@ -1,14 +1,9 @@
-<nav>
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/touren">Touren</a>
-</nav>
-
-<button type="button" (click)="addToDb()">Add to db</button>
-
-@for (item of items(); track item.id) {
-<h1>{{ item.name }}</h1>
-} @empty {
-<li class="empty">No items yet</li>
+@if (maintenance()) {
+  <app-maintenance></app-maintenance>
+} @else {
+  <nav>
+    <a routerLink="/dashboard">Dashboard</a>
+    <a routerLink="/touren">Touren</a>
+  </nav>
+  <router-outlet></router-outlet>
 }
-
-<router-outlet></router-outlet>

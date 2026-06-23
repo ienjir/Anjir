@@ -5,15 +5,18 @@ import { Hike, HikeSource, HikeStats } from './models/hike.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { liveQuery } from 'dexie';
 import { from } from 'rxjs';
+import { environment } from '@environments/environment.development';
+import { Maintenance } from '@features/maintenance/maintenance';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, Maintenance],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
   protected readonly title = signal('anjir');
+  protected readonly maintenance = signal(environment.maintenance);;
 
   hike_stats: HikeStats = {
     distanceMeters: 10000,
