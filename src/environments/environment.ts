@@ -1,3 +1,3 @@
 export const environment = {
-  maintenance: false,
+  maintenance: true,
 };
