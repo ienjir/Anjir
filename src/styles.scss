@@ -1,32 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-$color-bg: #F2F0EB;
-$color-bg-subtle: #FFFFFF;
-$color-bg-muted: #E7E3DA;
-$color-text: #1A1918;
-$color-text-muted: rgba(#423F3D, 0.75);
-$color-text-sublte: #A8968A;
-$color-primary: #3A673D;
-$color-primary-dark: #20693A;
-$color-primary-light: #D6EBDF;
-$color-accent: #A85B24;
-$color-accent-dark: #87491D;
-$color-accent-light: #F6E3D5;
-$color-data-1: #3A4DDA;
+$color-bg: #f2f0eb;
+$color-bg-subtle: #ffffff;
+$color-bg-muted: #e7e3da;
+$color-text: #1a1918;
+$color-text-muted: rgba(#423f3d, 0.75);
+$color-text-sublte: #a8968a;
+$color-primary: #3a673d;
+$color-primary-dark: #20693a;
+$color-primary-light: #d6ebdf;
+$color-accent: #a85b24;
+$color-accent-dark: #87491d;
+$color-accent-light: #f6e3d5;
+$color-data-1: #3a4dda;
 $color-data-2: #208048;
-$color-data-3: #B36025;
-$color-data-4: #D2C4A7;
-$color-success: #45A16B;
-$color-warning: #D48D11;
-$color-danger: #BD3228;
-$color-info: #3075A6;
+$color-data-3: #b36025;
+$color-data-4: #d2c4a7;
+$color-success: #45a16b;
+$color-warning: #d48d11;
+$color-danger: #bd3228;
+$color-info: #3075a6;
 
 $font-stack: Outfit, sans-serif;
 
 body {
   font: 100% $font-stack;
   color: $color-primary;
+  overflow-x: hidden;
   padding: 24px;
+  margin: 0;
 }
 
 h1 {
