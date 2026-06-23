@@ -1,1 +1,74 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+$color-bg: #f2f0eb;
+$color-bg-subtle: #ffffff;
+$color-bg-muted: #e7e3da;
+$color-text: #1a1918;
+$color-text-muted: rgba(#423f3d, 0.75);
+$color-text-sublte: #a8968a;
+$color-primary: #3a673d;
+$color-primary-dark: #20693a;
+$color-primary-light: #d6ebdf;
+$color-accent: #a85b24;
+$color-accent-dark: #87491d;
+$color-accent-light: #f6e3d5;
+$color-data-1: #3a4dda;
+$color-data-2: #208048;
+$color-data-3: #b36025;
+$color-data-4: #d2c4a7;
+$color-success: #45a16b;
+$color-warning: #d48d11;
+$color-danger: #bd3228;
+$color-info: #3075a6;
+
+$font-stack: Outfit, sans-serif;
+
+body {
+  font: 100% $font-stack;
+  color: $color-primary;
+  overflow-x: hidden;
+  padding: 24px;
+  margin: 0;
+}
+
+h1 {
+  font-size: 3.25rem;
+  font-weight: 800;
+  line-height: 105%;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 120%;
+}
+
+h3 {
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 130%;
+}
+
+p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 160%;
+}
+
+.body-small {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 160%;
+}
+
+.metric-large {
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 160%;
+}
+
+.metric-large {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 110%;
+}
