@@ -1,3 +1,5 @@
+import { RawGpx } from "./gpx.model";
+
 export type RawFileType = 'gpx' | 'fit';
 
 export interface RawFile {
@@ -7,4 +9,5 @@ export interface RawFile {
   filename: string
   data: Blob
   importedAt: Date
+  rawGpx: RawGpx,
 }

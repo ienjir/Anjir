@@ -23,6 +23,7 @@
     "dexie": "^4.4.3",
     "express": "^5.1.0",
     "fast-xml-parser": "^5.9.3",
+    "fast-xml-validator": "^1.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

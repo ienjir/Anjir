@@ -1,7 +1,11 @@
+import { SyntaxValidator } from 'fast-xml-validator';
 import { XMLParser } from 'fast-xml-parser';
-import { Hike } from '../models/hike.model';
+import { RawGpx } from '../models/gpx.model';
 
-export function gpx_to_hike(gpx_string: string) {
+export function gpx_string_to_(gpx_string: string): RawGpx {
+  const validation = SyntaxValidator.validate(gpx_string);
+  if (validation !== true) throw new Error(`Invalid XML: ${validation.err.msg}`);
+
   const xml_parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "",
@@ -11,9 +15,9 @@ export function gpx_to_hike(gpx_string: string) {
   });
 
   const result = xml_parser.parse(gpx_string);
+  if (!result?.gpx) throw new Error("Invalid GPX: missing root <gpx> element");
 
-  let hike: Hike = result
+  const raw_gpx: RawGpx = result;
 
-
-
+  return raw_gpx;
 }
