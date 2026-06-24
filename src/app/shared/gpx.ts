@@ -1,8 +1,9 @@
 import { SyntaxValidator } from 'fast-xml-validator';
 import { XMLParser } from 'fast-xml-parser';
 import { RawGpx } from '../models/gpx.model';
+import { Hike } from '../models/hike.model';
 
-export function gpx_string_to_(gpx_string: string): RawGpx {
+export function gpx_string_to_raw_gpx(gpx_string: string): RawGpx {
   const validation = SyntaxValidator.validate(gpx_string);
   if (validation !== true) throw new Error(`Invalid XML: ${validation.err.msg}`);
 
@@ -20,4 +21,8 @@ export function gpx_string_to_(gpx_string: string): RawGpx {
   const raw_gpx: RawGpx = result;
 
   return raw_gpx;
+}
+
+export function raw_gpx_to_hike(raw_gpx: RawGpx): Hike {
+
 }

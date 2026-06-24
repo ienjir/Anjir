@@ -1,4 +1,4 @@
-import { gpx_to_hike } from "./gpx";
+import { gpx_string_to_raw_gpx } from "./gpx";
 import { RawGpx } from "../models/gpx.model";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -108,16 +108,15 @@ const FULL_GPX = wrap(`
 describe("gpx_to_hike", () => {
 
   // ── Return shape ───────────────────────────────────────────────────────────
-
   describe("return shape", () => {
     it("returns a RawGpx object with a gpx root key", () => {
-      const result: RawGpx = gpx_to_hike(MINIMAL_GPX);
+      const result: RawGpx = gpx_string_to_raw_gpx(MINIMAL_GPX);
       expect(result).toBeDefined();
       expect(result.gpx).toBeDefined();
     });
 
     it("parses required GPX root attributes", () => {
-      const { gpx } = gpx_to_hike(MINIMAL_GPX);
+      const { gpx } = gpx_string_to_raw_gpx(MINIMAL_GPX);
       expect(gpx.xmlns).toBe("http://www.topografix.com/GPX/1/1");
       expect(gpx.version).toBe(1.1);
       expect(gpx.creator).toBe("TestSuite");
@@ -126,7 +125,7 @@ describe("gpx_to_hike", () => {
     });
 
     it("leaves optional fields undefined when absent", () => {
-      const { gpx } = gpx_to_hike(MINIMAL_GPX);
+      const { gpx } = gpx_string_to_raw_gpx(MINIMAL_GPX);
       expect(gpx.metadata).toBeUndefined();
       expect(gpx.wpt).toBeUndefined();
       expect(gpx.rte).toBeUndefined();
@@ -138,7 +137,7 @@ describe("gpx_to_hike", () => {
 
   describe("metadata", () => {
     it("parses basic metadata fields", () => {
-      const { gpx } = gpx_to_hike(FULL_METADATA_GPX);
+      const { gpx } = gpx_string_to_raw_gpx(FULL_METADATA_GPX);
       expect(gpx.metadata?.name).toBe("Test Hike");
       expect(gpx.metadata?.desc).toBe("A test description");
       expect(gpx.metadata?.time).toBe("2024-06-01T08:00:00Z");
@@ -146,7 +145,7 @@ describe("gpx_to_hike", () => {
     });
 
     it("parses metadata author with email and link", () => {
-      const author = gpx_to_hike(FULL_METADATA_GPX).gpx.metadata?.author;
+      const author = gpx_string_to_raw_gpx(FULL_METADATA_GPX).gpx.metadata?.author;
       expect(author?.name).toBe("Jane Doe");
       expect(author?.email?.id).toBe("jane");
       expect(author?.email?.domain).toBe("example.com");
@@ -156,14 +155,14 @@ describe("gpx_to_hike", () => {
     });
 
     it("parses metadata copyright", () => {
-      const copyright = gpx_to_hike(FULL_METADATA_GPX).gpx.metadata?.copyright;
+      const copyright = gpx_string_to_raw_gpx(FULL_METADATA_GPX).gpx.metadata?.copyright;
       expect(copyright?.author).toBe("OSM");
       expect(copyright?.year).toBe(2024);
       expect(copyright?.license).toBe("https://openstreetmap.org/license");
     });
 
     it("parses metadata bounds as numbers", () => {
-      const bounds = gpx_to_hike(FULL_METADATA_GPX).gpx.metadata?.bounds;
+      const bounds = gpx_string_to_raw_gpx(FULL_METADATA_GPX).gpx.metadata?.bounds;
       expect(bounds?.minlat).toBe(47.0);
       expect(bounds?.minlon).toBe(8.0);
       expect(bounds?.maxlat).toBe(48.0);
@@ -171,7 +170,7 @@ describe("gpx_to_hike", () => {
     });
 
     it("parses metadata link as an array", () => {
-      const links = gpx_to_hike(FULL_METADATA_GPX).gpx.metadata?.link;
+      const links = gpx_string_to_raw_gpx(FULL_METADATA_GPX).gpx.metadata?.link;
       expect(Array.isArray(links)).toBe(true);
       expect(links?.[0]?.href).toBe("https://example.com/hike");
     });
@@ -181,48 +180,48 @@ describe("gpx_to_hike", () => {
 
   describe("tracks (trk)", () => {
     it("parses a single track", () => {
-      const { gpx } = gpx_to_hike(TRACK_GPX);
+      const { gpx } = gpx_string_to_raw_gpx(TRACK_GPX);
       expect(Array.isArray(gpx.trk)).toBe(true);
       expect(gpx.trk).toHaveLength(1);
       expect(gpx.trk![0].name).toBe("Main Track");
     });
 
     it("parses multiple tracks as an array", () => {
-      const { gpx } = gpx_to_hike(MULTI_TRACK_GPX);
+      const { gpx } = gpx_string_to_raw_gpx(MULTI_TRACK_GPX);
       expect(gpx.trk).toHaveLength(2);
       expect(gpx.trk![0].name).toBe("Track 1");
       expect(gpx.trk![1].name).toBe("Track 2");
     });
 
     it("parses track segments as an array", () => {
-      const segs = gpx_to_hike(TRACK_GPX).gpx.trk![0].trkseg;
+      const segs = gpx_string_to_raw_gpx(TRACK_GPX).gpx.trk![0].trkseg;
       expect(Array.isArray(segs)).toBe(true);
       expect(segs).toHaveLength(1);
     });
 
     it("parses multiple track segments", () => {
-      const segs = gpx_to_hike(MULTI_SEGMENT_TRACK_GPX).gpx.trk![0].trkseg;
+      const segs = gpx_string_to_raw_gpx(MULTI_SEGMENT_TRACK_GPX).gpx.trk![0].trkseg;
       expect(segs).toHaveLength(2);
     });
 
     it("parses track points with lat/lon as numbers", () => {
-      const trkpt = gpx_to_hike(TRACK_GPX).gpx.trk![0].trkseg![0].trkpt![0];
+      const trkpt = gpx_string_to_raw_gpx(TRACK_GPX).gpx.trk![0].trkseg![0].trkpt![0];
       expect(trkpt.lat).toBe(47.1);
       expect(trkpt.lon).toBe(8.1);
     });
 
     it("parses track point elevation as a number", () => {
-      const trkpt = gpx_to_hike(TRACK_GPX).gpx.trk![0].trkseg![0].trkpt![0];
+      const trkpt = gpx_string_to_raw_gpx(TRACK_GPX).gpx.trk![0].trkseg![0].trkpt![0];
       expect(trkpt.ele).toBe(500);
     });
 
     it("parses track point time as a string", () => {
-      const trkpt = gpx_to_hike(TRACK_GPX).gpx.trk![0].trkseg![0].trkpt![0];
+      const trkpt = gpx_string_to_raw_gpx(TRACK_GPX).gpx.trk![0].trkseg![0].trkpt![0];
       expect(trkpt.time).toBe("2024-06-01T08:00:00Z");
     });
 
     it("parses multiple track points per segment", () => {
-      const trkpts = gpx_to_hike(TRACK_GPX).gpx.trk![0].trkseg![0].trkpt;
+      const trkpts = gpx_string_to_raw_gpx(TRACK_GPX).gpx.trk![0].trkseg![0].trkpt;
       expect(trkpts).toHaveLength(2);
     });
   });
@@ -231,26 +230,26 @@ describe("gpx_to_hike", () => {
 
   describe("routes (rte)", () => {
     it("parses a single route as an array", () => {
-      const { gpx } = gpx_to_hike(ROUTE_GPX);
+      const { gpx } = gpx_string_to_raw_gpx(ROUTE_GPX);
       expect(Array.isArray(gpx.rte)).toBe(true);
       expect(gpx.rte).toHaveLength(1);
       expect(gpx.rte![0].name).toBe("My Route");
     });
 
     it("parses route points with lat/lon as numbers", () => {
-      const rtept = gpx_to_hike(ROUTE_GPX).gpx.rte![0].rtept![0];
+      const rtept = gpx_string_to_raw_gpx(ROUTE_GPX).gpx.rte![0].rtept![0];
       expect(rtept.lat).toBe(47.1);
       expect(rtept.lon).toBe(8.1);
     });
 
     it("parses route point elevation and name", () => {
-      const rtept = gpx_to_hike(ROUTE_GPX).gpx.rte![0].rtept![0];
+      const rtept = gpx_string_to_raw_gpx(ROUTE_GPX).gpx.rte![0].rtept![0];
       expect(rtept.ele).toBe(500);
       expect(rtept.name).toBe("Start");
     });
 
     it("parses multiple route points as an array", () => {
-      const rtepts = gpx_to_hike(ROUTE_GPX).gpx.rte![0].rtept;
+      const rtepts = gpx_string_to_raw_gpx(ROUTE_GPX).gpx.rte![0].rtept;
       expect(rtepts).toHaveLength(2);
     });
   });
@@ -259,19 +258,19 @@ describe("gpx_to_hike", () => {
 
   describe("waypoints (wpt)", () => {
     it("parses a single waypoint as an array", () => {
-      const { gpx } = gpx_to_hike(WAYPOINT_GPX);
+      const { gpx } = gpx_string_to_raw_gpx(WAYPOINT_GPX);
       expect(Array.isArray(gpx.wpt)).toBe(true);
       expect(gpx.wpt).toHaveLength(1);
     });
 
     it("parses waypoint lat/lon as numbers", () => {
-      const wpt = gpx_to_hike(WAYPOINT_GPX).gpx.wpt![0];
+      const wpt = gpx_string_to_raw_gpx(WAYPOINT_GPX).gpx.wpt![0];
       expect(wpt.lat).toBe(47.5);
       expect(wpt.lon).toBe(8.5);
     });
 
     it("parses all common waypoint fields", () => {
-      const wpt = gpx_to_hike(WAYPOINT_GPX).gpx.wpt![0];
+      const wpt = gpx_string_to_raw_gpx(WAYPOINT_GPX).gpx.wpt![0];
       expect(wpt.ele).toBe(750);
       expect(wpt.time).toBe("2024-06-01T10:00:00Z");
       expect(wpt.name).toBe("Summit");
@@ -281,18 +280,18 @@ describe("gpx_to_hike", () => {
     });
 
     it("parses waypoint fix as a string literal", () => {
-      const wpt = gpx_to_hike(WAYPOINT_GPX).gpx.wpt![0];
+      const wpt = gpx_string_to_raw_gpx(WAYPOINT_GPX).gpx.wpt![0];
       expect(wpt.fix).toBe("3d");
     });
 
     it("parses waypoint GPS accuracy fields as numbers", () => {
-      const wpt = gpx_to_hike(WAYPOINT_GPX).gpx.wpt![0];
+      const wpt = gpx_string_to_raw_gpx(WAYPOINT_GPX).gpx.wpt![0];
       expect(wpt.sat).toBe(8);
       expect(wpt.hdop).toBe(1.2);
     });
 
     it("parses multiple waypoints as an array", () => {
-      const { gpx } = gpx_to_hike(MULTI_WAYPOINT_GPX);
+      const { gpx } = gpx_string_to_raw_gpx(MULTI_WAYPOINT_GPX);
       expect(gpx.wpt).toHaveLength(2);
       expect(gpx.wpt![0].name).toBe("A");
       expect(gpx.wpt![1].name).toBe("B");
@@ -303,7 +302,7 @@ describe("gpx_to_hike", () => {
 
   describe("combined GPX (metadata + wpt + rte + trk)", () => {
     it("parses all sections together without interference", () => {
-      const { gpx } = gpx_to_hike(FULL_GPX);
+      const { gpx } = gpx_string_to_raw_gpx(FULL_GPX);
       expect(gpx.metadata?.name).toBe("Full GPX");
       expect(gpx.wpt).toHaveLength(1);
       expect(gpx.rte).toHaveLength(1);
@@ -315,15 +314,15 @@ describe("gpx_to_hike", () => {
 
   describe("error handling", () => {
     it("throws or returns a meaningful error for empty string", () => {
-      expect(() => gpx_to_hike("")).toThrow();
+      expect(() => gpx_string_to_raw_gpx("")).toThrow();
     });
 
     it("throws or returns a meaningful error for invalid XML", () => {
-      expect(() => gpx_to_hike("<gpx><unclosed>")).toThrow();
+      expect(() => gpx_string_to_raw_gpx("<gpx><unclosed>")).toThrow();
     });
 
     it("throws or returns a meaningful error for valid XML that is not GPX", () => {
-      expect(() => gpx_to_hike("<root><item/></root>")).toThrow();
+      expect(() => gpx_string_to_raw_gpx("<root><item/></root>")).toThrow();
     });
   });
 });
