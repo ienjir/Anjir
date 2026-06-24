@@ -23,6 +23,10 @@ export function gpx_string_to_raw_gpx(gpx_string: string): RawGpx {
   return raw_gpx;
 }
 
-export function raw_gpx_to_hike(raw_gpx: RawGpx): Hike {
-
-}
+// export function raw_gpx_to_hike(raw_gpx: RawGpx): Omit<Hike, 'id'> {
+//   const hike: Hike = {
+//     name: raw_gpx.gpx.metadata?.name || "",
+//   }
+//
+//   return hike
+// }
