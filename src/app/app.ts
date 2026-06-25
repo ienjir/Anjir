@@ -18,10 +18,6 @@ export class App {
 
   name = 'Andreas';
 
-  constructor() {
-    this.translate.use('en');
-  }
-
   switch_language() {
     this.translate.use('de');
   }
