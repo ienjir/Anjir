@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import {TranslatePipe, TranslateDirective} from "@ngx-translate/core";
+import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { environment } from '@environments/environment';
 import { Maintenance } from '@features/maintenance/maintenance';
@@ -16,10 +16,13 @@ export class App {
   protected readonly maintenance = signal(environment.maintenance);
   private translate = inject(TranslateService);
 
+  name = 'Andreas';
+
   constructor() {
     this.translate.use('en');
   }
 
-
+  switch_language() {
+    this.translate.use('de');
+  }
 }
-

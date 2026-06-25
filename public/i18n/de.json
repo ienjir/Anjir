@@ -1,6 +1,6 @@
 {
   "app": {
-    "hello": "hallo {{value}}",
+    "hello": "hallo {{name}}",
     "title": "Übersetzungsdemo"
   }
 }
