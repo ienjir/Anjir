@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { environment } from '@environments/environment';
 import { Maintenance } from '@features/maintenance/maintenance';
@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, Maintenance, TranslatePipe, TranslateDirective],
+  imports: [RouterOutlet, RouterLink, Maintenance, TranslatePipe],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

@@ -1,6 +1,5 @@
 {
-  "app": {
-    "hello": "hello {{name}}",
-    "title": "Translation Demo"
+  "gpx": {
+    "unnamed_hike": "Unnamed hike"
   }
 }
