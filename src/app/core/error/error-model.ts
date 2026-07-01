@@ -9,7 +9,7 @@ interface AppError {
 
 type ErrorCode =
   | 'GPX_PARSE_FAILED'
-  | 'GPX_NO_TRACK'
+  | 'GPX_NO_TRACK_OR_ROUTE'
   | 'FIT_PARSE_FAILED'
   | 'STORAGE_WRITE_FAILED'
   | 'STORAGE_READ_FAILED'

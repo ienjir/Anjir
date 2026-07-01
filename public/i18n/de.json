@@ -1,6 +1,8 @@
 {
-  "app": {
-    "hello": "hallo {{name}}",
-    "title": "Übersetzungsdemo"
+  "gpx": {
+    "unnamed_hike": "Unnamed hike"
+  },
+  "err": {
+    "gpx_no_track_or_route": ""
   }
 }
