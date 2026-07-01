@@ -34,6 +34,7 @@ export interface Hike {
 export interface HikeStats {
   distanceMeters: number;
   durationSeconds: number;
+  durationMovingSeconds: number;
   elevationGainMeters: number;
   elevationLossMeters: number;
   elevationMaxMeters: number;
@@ -41,6 +42,7 @@ export interface HikeStats {
   avgHeartRate?: number;
   maxHeartRate?: number;
   avgPaceSecondsPerKm?: number;
+  avgPaceMovingSecondsPerKm?: number;
   maxPaceSecondsPerKm?: number;
   averageTemperatureCelsius?: number;
 }

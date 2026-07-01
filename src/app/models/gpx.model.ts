@@ -1,62 +1,76 @@
-export interface RawGpx {
-  gpx: GpxRoot;
+import { TrackPoint } from './track.model';
+import { Waypoint } from './planned-hike.model';
+
+export interface NormalizedActivity {
+  points: TrackPoint[];
+  source: 'track' | 'route';
+  hasTimestamps: boolean;
+  startTime?: Date;
+  endTime?: Date;
+  name?: string;
+  description?: string;
+  waypoints?: Waypoint[];
 }
 
-export interface GpxRoot {
+export interface RawGpx {
+  gpx: RawGpxRoot;
+}
+
+export interface RawGpxRoot {
   xmlns: string;
   version: string;
   creator: string;
-  "xmlns:xsi": string;
-  "xsi:schemaLocation": string;
-  metadata?: Metadata;
-  wpt?: Waypoint[];
-  rte?: Route[];
+  'xmlns:xsi': string;
+  'xsi:schemaLocation': string;
+  metadata?: RawMetadata;
+  wpt?: RawGpxPoint[];
+  rte?: RawRoute[];
   trk?: Track[];
   extensions?: unknown;
 }
 
-export interface Metadata {
+export interface RawMetadata {
   name?: string;
   desc?: string;
-  author?: Author;
-  copyright?: Copyright;
-  link?: Link[];
+  author?: RawAuthor;
+  copyright?: RawCopyright;
+  link?: RawLink[];
   time?: string;
   keywords?: string;
-  bounds?: Bounds;
+  bounds?: RawBounds;
 }
 
-export interface Author {
+export interface RawAuthor {
   name?: string;
-  email?: Email;
-  link?: Link[];
+  email?: RawEmail;
+  link?: RawLink[];
 }
 
-export interface Email {
+export interface RawEmail {
   id: string;
   domain: string;
 }
 
-export interface Link {
+export interface RawLink {
   href: string;
   text?: string;
   type?: string;
 }
 
-export interface Copyright {
+export interface RawCopyright {
   author: string;
   year?: string;
   license?: string;
 }
 
-export interface Bounds {
+export interface RawBounds {
   minlat: number;
   minlon: number;
   maxlat: number;
   maxlon: number;
 }
 
-export interface Waypoint {
+export interface RawGpxPoint {
   lat: number;
   lon: number;
   ele?: number;
@@ -67,10 +81,10 @@ export interface Waypoint {
   cmt?: string;
   desc?: string;
   src?: string;
-  link?: Link[];
+  link?: RawLink[];
   sym?: string;
   type?: string;
-  fix?: "none" | "2d" | "3d" | "dgps" | "pps";
+  fix?: 'none' | '2d' | '3d' | 'dgps' | 'pps';
   sat?: number;
   hdop?: number;
   vdop?: number;
@@ -79,15 +93,15 @@ export interface Waypoint {
   dgpsid?: number;
 }
 
-export interface Route {
+export interface RawRoute {
   name?: string;
   cmt?: string;
   desc?: string;
   src?: string;
-  link?: Link[];
+  link?: RawLink[];
   number?: number;
   type?: string;
-  rtept?: Waypoint[];
+  rtept?: RawGpxPoint[];
 }
 
 export interface Track {
@@ -95,12 +109,12 @@ export interface Track {
   cmt?: string;
   desc?: string;
   src?: string;
-  link?: Link[];
+  link?: RawLink[];
   number?: number;
   type?: string;
-  trkseg?: TrackSegment[];
+  trkseg?: RawTrackSegment[];
 }
 
-export interface TrackSegment {
-  trkpt?: Waypoint[];
+export interface RawTrackSegment {
+  trkpt?: RawGpxPoint[];
 }
