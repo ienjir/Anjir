@@ -1,15 +1,8 @@
 import { TrackPoint } from './track.model';
-import { Waypoint } from './planned-hike.model';
 
 export interface NormalizedActivity {
-  points: TrackPoint[];
-  source: 'track' | 'route';
-  hasTimestamps: boolean;
-  startTime?: Date;
-  endTime?: Date;
-  name?: string;
-  description?: string;
-  waypoints?: Waypoint[];
+  segements: TrackPoint[][];
+  suggestedName?: string;
 }
 
 export interface RawGpx {

@@ -1,6 +1,12 @@
 {
-  "app": {
-    "hello": "hallo {{name}}",
-    "title": "Übersetzungsdemo"
+  "gpx": {
+    "unnamed_hike": "Unnamed hike"
+  },
+  "err": {
+    "gpx_no_track_or_route": "",
+    "gpx_none_or_too_many_routes": "Die GPX Datei hat entweder keine oder mehr als 1 Route",
+    "gpx_none_or_too_many_tracks": "Die GPX Datei hat entweder keine oder mehr als 1 Track",
+    "gpx_no_track_seg_on_track": "Die GPX Datei hat keine Tracksegmente",
+    "gpx_no_trackPoints_on_trackseg": "Die GPX Datei hat keine Trackpoints auf den Tracksegmente"
   }
 }
