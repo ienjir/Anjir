@@ -1,59 +1,29 @@
-# Anjir
+# Welcome to Anjir
+Anjir is an hiking app for viewing analysing past hikes, plan new ones and get estimated times for it based on your past hikes. The whole app is completly usable as a client only without an account. Accounts only exist to have persistant storage across multiple devices and to share hikes. 
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+## Roadmap
+Phase 1 (current):
+- Gpx/FIT Import
+- Visual display of each hike
+- Stats for each Hike
+- Compare 2 hikes
+- Export/Backup
 
-## Development server
+Phase 2:
+- Accounts
+- Auto import from Garmin
+- Share tours
+- Embed tours (Iframes)
 
-To start a local development server, run:
+Phase 3:
+- Drawing routes on maps
+- Import and edit Gpx routes
+- Multi Day Planning
+- Difficulty estimator
+- Weather report
+- Time estimate based on past hikes
+- Fitness trends over time
 
-```bash
-ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Bugs/Feature request
+If you have any issues with the app or want to request a feature either open an Issue on <a href="https://github.com/ienjir/Anjir/issues/new">Githu</a> or write me an <a href="mailto:hello@ienjir.dev">Mail</a>. Please provide as much info as possible as it helps me to fix the bugs faster.
