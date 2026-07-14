@@ -39,10 +39,15 @@ export interface HikeStats {
   elevationLossMeters: number;
   elevationMaxMeters: number;
   elevationMinMeters: number;
+  avgPaceSecondsPerKm: number;
+  avgPaceMovingSecondsPerKm: number;
+  minPaceSecondsPerKm: number;
+  maxPaceSecondsPerKm: number;
   avgHeartRate?: number;
+  minHeartRate?: number;
   maxHeartRate?: number;
-  avgPaceSecondsPerKm?: number;
-  avgPaceMovingSecondsPerKm?: number;
-  maxPaceSecondsPerKm?: number;
+  avgCadence?: number;
+  minCadence?: number;
+  maxCadence?: number;
   averageTemperatureCelsius?: number;
 }

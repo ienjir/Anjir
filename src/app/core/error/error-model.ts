@@ -7,9 +7,14 @@ interface AppError {
   cause?: unknown;
 }
 
-type ErrorCode =
-  | 'GPX_NONE_OR_TOO_MANY_ROUTES'
-  | 'GPX_NONE_OR_TOO_MANY_TRACKS'
-  | 'GPX_NO_TRACKSEG_ON_TRACK'
-  | 'GPX_NO_TRACKPOINTS_ON_TRACKSEG'
-  | 'GPX_EMPTY_SEGMENT';
+enum ErrorCode {
+  // Gpx errors
+  GPX_NO_ROUTES,
+  GPX_NO_TRACKS,
+  GPX_NO_TRKSEG,
+  GPX_NO_TRKPNT,
+  GPX_EMPTY_SEG,
+  GPX_UND_TRKPNT,
+  GPX_NO_TMPSTMP,
+  GPX_NO_VLD_TRK_DTA,
+}

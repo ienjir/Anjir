@@ -3,10 +3,15 @@
     "unnamed_hike": "Unnamed hike"
   },
   "err": {
-    "gpx_no_track_or_route": "",
-    "gpx_none_or_too_many_routes": "Die GPX Datei hat entweder keine oder mehr als 1 Route",
-    "gpx_none_or_too_many_tracks": "Die GPX Datei hat entweder keine oder mehr als 1 Track",
-    "gpx_no_track_seg_on_track": "Die GPX Datei hat keine Tracksegmente",
-    "gpx_no_trackPoints_on_trackseg": "Die GPX Datei hat keine Trackpoints auf den Tracksegmente"
+    "gpx": {
+      "gpx_no_track_or_route": "",
+      "gpx_none_or_too_many_routes": "Die GPX Datei hat entweder keine oder mehr als 1 Route",
+      "gpx_none_or_too_many_tracks": "Die GPX Datei hat entweder keine oder mehr als 1 Track",
+      "gpx_no_track_seg_on_track": "Die GPX Datei hat keine Tracksegmente",
+      "gpx_no_track_points_on_trackseg": "Die GPX Datei hat keine Trackpoints auf den Tracksegmente",
+      "gpx_trackpoint_is_undefined": "Ein Trackpoint ist undefiniert",
+      "gpx_no_timestamppx_no_timestamp": "Auf einem Trackpoint ist kein Zeitangabe",
+      "gpx_no_valid_track_data": "Keine valide Daten um die Wander-Statistiken zu berechnen"
+    }
   }
 }

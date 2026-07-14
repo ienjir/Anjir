@@ -1,7 +1,7 @@
 import { TrackPoint } from './track.model';
 
 export interface NormalizedActivity {
-  segements: TrackPoint[][];
+  segments: TrackPoint[][];
   suggestedName?: string;
 }
 
