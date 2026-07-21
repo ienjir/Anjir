@@ -1,5 +1,5 @@
-import { gpx_string_to_raw_gpx } from "./gpx";
-import { RawGpx } from "../models/gpx.model";
+import { gpx_string_to_raw_gpx } from "./normalised-activity-converter";
+import { RawGpx } from "@models/gpx.model";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 

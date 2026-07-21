@@ -24,6 +24,7 @@
       "@interfaces/*":   ["./src/app/core/interfaces/*"],
       "@interceptors/*": ["./src/app/core/interceptors/*"],
       "@services/*":     ["./src/app/core/services/*"],
+      "@models/*":       ["./src/app/models/*"],
       "@db/*":           ["./src/app/core/db/*"]
     }
   },
