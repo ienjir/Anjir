@@ -4,7 +4,6 @@
   },
   "err": {
     "gpx": {
-      "gpx_no_track_or_route": "",
       "gpx_none_or_too_many_routes": "Die GPX Datei hat entweder keine oder mehr als 1 Route",
       "gpx_none_or_too_many_tracks": "Die GPX Datei hat entweder keine oder mehr als 1 Track",
       "gpx_no_track_seg_on_track": "Die GPX Datei hat keine Tracksegmente",
@@ -12,6 +11,11 @@
       "gpx_trackpoint_is_undefined": "Ein Trackpoint ist undefiniert",
       "gpx_no_timestamppx_no_timestamp": "Auf einem Trackpoint ist kein Zeitangabe",
       "gpx_no_valid_track_data": "Keine valide Daten um die Wander-Statistiken zu berechnen"
+    },
+    "fit": {
+      "not_valid": "Die Fit Datei ist nicht valide",
+      "file_corrupted": "Die Fit Datei ist beschädigt",
+      "read_error": "Beim Lesen der Datei gab es 1 oder mehr Errors. Schauen in sie die Konsole an um mehr zu erfahren"
     }
   }
 }

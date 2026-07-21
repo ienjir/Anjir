@@ -4,7 +4,7 @@ import { RawGpxRoot, NormalizedActivity, RawGpx, RawGpxPoint } from '../models/g
 import { HikeStats } from '../models/hike.model';
 import { TrackPoint } from '../models/track.model';
 import { environment } from '@environments/environment';
-import { hrtime } from 'process';
+import { Decoder, Stream, FitMessages } from '@garmin/fitsdk';
 
 export function gpx_string_to_raw_gpx(gpx_string: string): RawGpx {
   const validation = SyntaxValidator.validate(gpx_string);
@@ -31,11 +31,7 @@ export function raw_gpx_to_normalised_activity(raw_gpx: RawGpxRoot): Result<Norm
   if (raw_gpx.trk == undefined || raw_gpx.trk.length > 1) {
     return {
       success: false,
-      error: {
-        code: ErrorCode.GPX_NO_ROUTES,
-        message: 'Gpx does not have a route or has more than 1',
-        userMessage: 'err.gpx.gpx_none_or_too_many_tracks',
-      },
+      error: makeError('GPX_NO_ROUTES')
     };
   }
 
@@ -43,33 +39,21 @@ export function raw_gpx_to_normalised_activity(raw_gpx: RawGpxRoot): Result<Norm
   if (raw_gpx.trk[0].trkseg == undefined || raw_gpx.trk[0].trkseg?.length == 0) {
     return {
       success: false,
-      error: {
-        code: ErrorCode.GPX_NO_TRKSEG,
-        message: 'Gpx file does not have any trackseg on the first track',
-        userMessage: 'err.gpx.gpx_no_track_seg_on_track',
-      },
+      error: makeError('GPX_NO_TRKSEG')
     };
   }
 
   if (raw_gpx.trk[0].trkseg[0].trkpt == undefined || raw_gpx.trk[0].trkseg[0].trkpt.length == 0) {
     return {
       success: false,
-      error: {
-        code: ErrorCode.GPX_NO_TRKPNT,
-        message: 'Gpx file does not have any track points on the track segment',
-        userMessage: 'err.gpx.gpx_no_track_points_on_trackseg',
-      },
+      error: makeError('GPX_NO_TRKPNT')
     };
   }
 
   if (raw_gpx.trk[0].trkseg.some((seg) => seg.trkpt == undefined || seg.trkpt.length === 0)) {
     return {
       success: false,
-      error: {
-        code: ErrorCode.GPX_EMPTY_SEG,
-        message: 'GPX file has a segment with no trackpoints',
-        userMessage: 'err.gpx.gpx_empty_segment',
-      },
+      error: makeError('GPX_EMPTY_SEG')
     };
   }
 
@@ -104,22 +88,14 @@ export function raw_gpx_point_to_track_point(raw_gpx_point: RawGpxPoint): Result
   if (raw_gpx_point === undefined) {
     return {
       success: false,
-      error: {
-        code: ErrorCode.GPX_UND_TRKPNT,
-        message: 'Track point is undefined',
-        userMessage: 'err.gpx.gpx_trackpoint_is_undefined'
-      }
+      error: makeError('GPX_UND_TRKPNT')
     }
   }
 
   if (raw_gpx_point.time === undefined) {
     return {
       success: false,
-      error: {
-        code: ErrorCode.GPX_NO_TMPSTMP,
-        message: ('No timestamp on track point (Lat: ' + raw_gpx_point.lat + ', Lon: ' + raw_gpx_point.lon),
-                  userMessage: 'err.gpx.gpx_no_timestamp'
-      }
+      error: makeError('GPX_NO_TMPSTMP')
     }
   }
 
@@ -226,11 +202,7 @@ export function generate_hike_stats(track_seg: TrackPoint[][]): Result<HikeStats
   if (distance_meters === 0) {
     return {
       success: false,
-      error: {
-        code: ErrorCode.GPX_NO_VLD_TRK_DTA,
-        message: 'No valid track data to calculate stats',
-        userMessage: 'err.gpx_no_valid_track_data',
-      },
+      error: makeError('GPX_NO_VLD_TRK_DTA')
     };
   }
 
@@ -301,4 +273,46 @@ function haversine_distance(pointA: TrackPoint, pointB: TrackPoint): number {
 
 function to_radians(degrees: number): number {
   return (degrees * Math.PI) / 180;
+}
+
+export async function decodeFit(file: File): Promise<Result<FitMessages>> {
+  const arrayBuffer = await file.arrayBuffer();
+
+  const stream = Stream.fromByteArray(new Uint8Array(arrayBuffer));
+  const decoder = new Decoder(stream);
+
+  if (!decoder.isFIT()) {
+    return {
+      success: false,
+      error: makeError('FIT_NOT_VLD'),
+    }
+  }
+
+  if (!decoder.checkIntegrity()) {
+    return {
+      success: false,
+      error: makeError('FIT_NOT_VLD'),
+    }
+  }
+
+  const { messages, errors } = decoder.read({
+    convertDateTimesToDates: true,
+    convertTypesToStrings: true,
+    applyScaleAndOffset: true,
+    expandSubFields: true,
+    expandComponents: true,
+  });
+
+  if (errors.length > 0) {
+    console.error(errors)
+    return {
+      success: false,
+      error: makeError('FIT_READ')
+    }
+  }
+
+  return {
+    success: true,
+    data: messages,
+  };
 }
