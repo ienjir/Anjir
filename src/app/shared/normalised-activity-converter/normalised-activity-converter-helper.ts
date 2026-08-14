@@ -1,4 +1,5 @@
 import { environment } from "@environments/environment";
+import { RecordMesg } from "@garmin/fitsdk";
 import { RawGpxPoint } from "@models/gpx.model";
 import { TrackPoint } from "@models/track.model";
 
@@ -60,4 +61,57 @@ export function haversine_distance(pointA: TrackPoint, pointB: TrackPoint): numb
 
 function to_radians(degrees: number): number {
   return (degrees * Math.PI) / 180;
+}
+
+export function record_mesgs_to_tracksegs(records: RecordMesg[]): TrackPoint[][] {
+  if (!records || records.length === 0) {
+    return [];
+  }
+
+  const segments: TrackPoint[][] = [];
+  let current_segment: TrackPoint[] = [];
+
+  for (let i = 0; i < records.length; i++) {
+    const record = records[i];
+
+    if (!record.timestamp || record.positionLat === undefined || record.positionLong === undefined) {
+      continue;
+    }
+
+    const lat = fitSemicirclesToDegrees(record.positionLat);
+    const lon = fitSemicirclesToDegrees(record.positionLong);
+
+    const track_point: TrackPoint = {
+      lat,
+      lon,
+      timestamp: new Date(record.timestamp),
+      elevationMeters: record.altitude ?? record.enhancedAltitude,
+      heartRate: record.heartRate,
+      cadence: record.cadence ?? record.cadence256,
+      temperature: record.temperature,
+    };
+
+    if (current_segment.length > 0) {
+      const prev_point = current_segment[current_segment.length - 1];
+      const time_gap_seconds =
+        (track_point.timestamp.getTime() - prev_point.timestamp.getTime()) / 1000;
+
+      if (time_gap_seconds > environment.gap_threshold_seconds) {
+        segments.push(current_segment);
+        current_segment = [];
+      }
+    }
+
+    current_segment.push(track_point);
+  }
+
+  if (current_segment.length > 0) {
+    segments.push(current_segment);
+  }
+
+  return segments;
+}
+
+function fitSemicirclesToDegrees(semicircles: number): number {
+  return (semicircles * 180) / (2 ** 31);
 }

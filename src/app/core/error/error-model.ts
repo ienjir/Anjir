@@ -3,7 +3,7 @@ type Result<T, E = AppError> = { success: true; data: T } | { success: false; er
 interface AppError {
   code: ErrorCode;
   message: string;
-  userMessage?: string;
+  userMessage: string;
   cause?: unknown;
 }
 
@@ -47,8 +47,21 @@ const errorDefs = {
   FIT_READ: {
     message: 'One or multiple errors occured when reading fit file',
     userMessage: 'err.fit.read_error'
+  },
+  FIT_NO_DISTANCE_DATA: {
+    message: 'The fit file does not contain any data about distance',
+    userMessage: 'err.fit.no_distance'
+  },
+  FIT_NO_RECORD_MESG: {
+    message: 'No record messages on fit file',
+    userMessage: 'err.fit.no_record_mesg'
+  },
+  FIT_NO_SESSION_MESG: {
+    message: 'No session messages on fit file',
+    userMessage: 'err.fit.no_session_mesg'
   }
-} satisfies Record<string, { message: string; userMessage?: string }>;
+
+} satisfies Record<string, { message: string; userMessage: string }>;
 
 type ErrorCode = keyof typeof errorDefs;
 

@@ -15,7 +15,10 @@
     "fit": {
       "not_valid": "Die Fit Datei ist nicht valide",
       "file_corrupted": "Die Fit Datei ist beschädigt",
-      "read_error": "Beim Lesen der Datei gab es 1 oder mehr Errors. Schauen in sie die Konsole an um mehr zu erfahren"
+      "read_error": "Beim Lesen der Datei gab es 1 oder mehr Errors. Schauen in sie die Konsole an um mehr zu erfahren",
+      "no_distance": "Die Fit Datei enthält keine Distanzdaten",
+      "no_record_mesg": "Die Fit Datei enthält keine Record Messages",
+      "no_session_mesg": "Die Fit Datei enthält keine Record Messages"
     }
   }
 }

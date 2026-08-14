@@ -4,8 +4,8 @@ import { RawGpxRoot, NormalizedActivity, RawGpx } from '@models/gpx.model';
 import { HikeStats } from '@models/hike.model';
 import { TrackPoint } from '@models/track.model';
 import { environment } from '@environments/environment';
-import { Decoder, Stream, FitMessages } from '@garmin/fitsdk';
-import { haversine_distance, raw_gpx_point_to_track_point, smoothElevation } from '@shared/normalised-activity-converter/normalised-activity-converter-helper';
+import { Decoder, Stream, FitMessages, SessionMesg } from '@garmin/fitsdk';
+import { haversine_distance, raw_gpx_point_to_track_point, record_mesgs_to_tracksegs, smoothElevation } from '@shared/normalised-activity-converter/normalised-activity-converter-helper';
 
 export function gpx_string_to_raw_gpx(gpx_string: string): RawGpx {
   const validation = SyntaxValidator.validate(gpx_string);
@@ -76,9 +76,14 @@ export function raw_gpx_to_normalised_activity(raw_gpx: RawGpxRoot): Result<Norm
     points.push(segmentPoints);
   }
 
+  const hike_stats_result = generate_gpx_hike_stats(points)
+
+  if (!hike_stats_result.success) return hike_stats_result;
+
   return {
     success: true,
     data: {
+      hikeStats: hike_stats_result.data,
       segments: points,
       suggestedName: raw_gpx.metadata?.name,
     },
@@ -86,7 +91,7 @@ export function raw_gpx_to_normalised_activity(raw_gpx: RawGpxRoot): Result<Norm
 }
 
 
-export function generate_hike_stats(track_seg: TrackPoint[][]): Result<HikeStats> {
+export function generate_gpx_hike_stats(track_seg: TrackPoint[][]): Result<HikeStats> {
   let moving_seconds = 0;
   let total_seconds = 0;
   let distance_meters = 0;
@@ -217,7 +222,7 @@ export function generate_hike_stats(track_seg: TrackPoint[][]): Result<HikeStats
   };
 }
 
-export async function decodeFit(file: File): Promise<Result<FitMessages>> {
+export async function decode_fit(file: File): Promise<Result<FitMessages>> {
   const arrayBuffer = await file.arrayBuffer();
 
   const stream = Stream.fromByteArray(new Uint8Array(arrayBuffer));
@@ -257,4 +262,111 @@ export async function decodeFit(file: File): Promise<Result<FitMessages>> {
     success: true,
     data: messages,
   };
+}
+
+
+export function fit_messages_to_normalized_activity(fit_messges: FitMessages): Result<NormalizedActivity> {
+  if (!fit_messges.recordMesgs || fit_messges.recordMesgs.length === 0) {
+    return { success: false, error: makeError('FIT_NO_RECORD_MESG') };
+  }
+
+  const session = fit_messges.sessionMesgs?.[0];
+  if (!session) {
+    return { success: false, error: makeError('FIT_NO_SESSION_MESG') };
+  }
+
+  const track_points = record_mesgs_to_tracksegs(fit_messges.recordMesgs);
+  const hike_stats_result = generate_fit_hike_stats(session, track_points);
+
+  if (!hike_stats_result.success) return hike_stats_result;
+
+  return {
+    success: true,
+    data: {
+      segments: track_points,
+      suggestedName: session.sport?.toString(),
+      hikeStats: hike_stats_result.data,
+    },
+  };
+}
+
+export function generate_fit_hike_stats(session_mesg: SessionMesg, track_seg: TrackPoint[][]): Result<HikeStats> {
+  const distance_meters = session_mesg.totalDistance ?? 0;
+
+  if (distance_meters === 0) {
+    return {
+      success: false,
+      error: makeError('FIT_NO_DISTANCE_DATA')
+    };
+  }
+
+  let min_pace_sec = Infinity;
+  let max_pace_sec = -Infinity;
+  const total_seconds = session_mesg.totalElapsedTime ?? 0;
+  const moving_seconds = session_mesg.totalTimerTime ?? 0;
+  const gain_meters = session_mesg.totalAscent ?? 0;
+  const loss_meters = session_mesg.totalDescent ?? 0;
+  let max_meters = -Infinity;
+  let min_meters = Infinity;
+
+  for (const segment of track_seg) {
+    for (const point of segment) {
+      if (point.elevationMeters !== undefined) {
+        max_meters = Math.max(max_meters, point.elevationMeters);
+        min_meters = Math.min(min_meters, point.elevationMeters);
+      }
+    }
+  }
+
+  max_meters = max_meters === -Infinity ? 0 : max_meters;
+  min_meters = min_meters === Infinity ? 0 : min_meters;
+
+  const avg_hrt = session_mesg.avgHeartRate ?? undefined;
+  const max_hrt = session_mesg.maxHeartRate ?? undefined;
+  const avg_cadence = session_mesg.avgCadence ?? undefined;
+  const max_cadence = session_mesg.maxCadence ?? undefined;
+  const avg_temperature_celsius = session_mesg.avgTemperature ?? undefined;
+
+  const distance_km = distance_meters / 1000;
+  const avg_pace_sec = total_seconds / distance_km;
+  const avg_pace_mov_sec = moving_seconds > 0 ? moving_seconds / distance_km : 0;
+
+  for (const segment of track_seg) {
+    for (let i = 1; i < segment.length; i++) {
+      const prev = segment[i - 1];
+      const curr = segment[i];
+      const interval_distance = haversine_distance(curr, prev) / 1000;
+      const interval_time = (curr.timestamp.getTime() - prev.timestamp.getTime()) / 1000;
+
+      if (interval_distance > 0 && interval_time > 0) {
+        const pace = interval_time / interval_distance;
+        min_pace_sec = Math.min(min_pace_sec, pace);
+        max_pace_sec = Math.max(max_pace_sec, pace);
+      }
+    }
+  }
+
+  return {
+    success: true,
+    data: {
+      distanceMeters: distance_meters,
+      durationSeconds: total_seconds,
+      durationMovingSeconds: moving_seconds,
+      elevationGainMeters: gain_meters,
+      elevationLossMeters: loss_meters,
+      elevationMaxMeters: max_meters,
+      elevationMinMeters: min_meters,
+      avgPaceSecondsPerKm: avg_pace_sec,
+      avgPaceMovingSecondsPerKm: avg_pace_mov_sec,
+      minPaceSecondsPerKm: min_pace_sec,
+      maxPaceSecondsPerKm: max_pace_sec,
+      avgHeartRate: avg_hrt,
+      minHeartRate: undefined,
+      maxHeartRate: max_hrt,
+      avgCadence: avg_cadence,
+      minCadence: undefined,
+      maxCadence: max_cadence,
+      averageTemperatureCelsius: avg_temperature_celsius,
+    }
+  }
 }

@@ -1,7 +1,9 @@
+import { HikeStats } from '@models/hike.model';
 import { TrackPoint } from './track.model';
 
 export interface NormalizedActivity {
   segments: TrackPoint[][];
+  hikeStats: HikeStats;
   suggestedName?: string;
 }
 

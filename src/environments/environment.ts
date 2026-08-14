@@ -6,4 +6,6 @@ export const environment = {
   speed_threshold: 0.5,
   // Tolerance for meters in elevation smoothing
   elevation_smoothing_tolerance: 5,
+  // Duration between trackpoints to make a seg break in fit file
+  gap_threshold_seconds: 300,
 };
