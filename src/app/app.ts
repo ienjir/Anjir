@@ -1,41 +1,24 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
-import { db } from '@core/db/db';
-import { Hike, HikeSource, HikeStats } from './models/hike.model';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { liveQuery } from 'dexie';
-import { from } from 'rxjs';
 import { environment } from '@environments/environment';
 import { Maintenance } from '@features/maintenance/maintenance';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, Maintenance],
+  imports: [RouterOutlet, RouterLink, Maintenance, TranslatePipe],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
   protected readonly title = signal('anjir');
   protected readonly maintenance = signal(environment.maintenance);
+  private translate = inject(TranslateService);
 
-  hike_stats: HikeStats = {
-    distanceMeters: 10000,
-    durationSeconds: 1000,
-    elevationGainMeters: 13,
-    elevationLossMeters: 1000,
-    elevationMaxMeters: 1031,
-    elevationMinMeters: 10,
-  };
+  name = 'Andreas';
 
-  addToDb() {
-    db.hikes.add({
-      name: 'Test',
-      date: new Date(),
-      source: HikeSource.gpx,
-      stats: this.hike_stats,
-      createdAt: new Date(),
-    });
+  switch_language() {
+    this.translate.use('de');
   }
-
-  items = toSignal(from(liveQuery(() => db.hikes.toArray())), { initialValue: [] as Hike[] });
 }

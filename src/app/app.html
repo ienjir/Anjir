@@ -4,6 +4,8 @@
   <nav>
     <a routerLink="/dashboard">Dashboard</a>
     <a routerLink="/touren">Touren</a>
+    <p>{{ 'app.hello' | translate: { name } }}</p>
+    <button (click)="switch_language()">Test</button>
   </nav>
   <router-outlet></router-outlet>
 }
