@@ -31,7 +31,10 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss",
+              "node_modules/@maptiler/sdk/dist/maptiler-sdk.css"
+            ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]
             },
