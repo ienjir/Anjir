@@ -5,7 +5,8 @@ import { HikeStats } from '@models/hike.model';
 import { TrackPoint } from '@models/track.model';
 import { environment } from '@environments/environment';
 import { Decoder, Stream, FitMessages, SessionMesg } from '@garmin/fitsdk';
-import { haversine_distance, raw_gpx_point_to_track_point, record_mesgs_to_tracksegs, smoothElevation } from '@shared/normalised-activity-converter/normalised-activity-converter-helper';
+import { generate_geo_bounds, haversine_distance, raw_gpx_point_to_track_point, record_mesgs_to_tracksegs, smoothElevation } from '@shared/normalised-activity-converter/normalised-activity-converter-helper';
+
 
 export function gpx_string_to_raw_gpx(gpx_string: string): RawGpx {
   const validation = SyntaxValidator.validate(gpx_string);
@@ -19,12 +20,12 @@ export function gpx_string_to_raw_gpx(gpx_string: string): RawGpx {
     isArray: (tag) => ['wpt', 'rte', 'trk', 'trkseg', 'trkpt', 'rtept', 'link'].includes(tag),
   });
 
-    const result = xml_parser.parse(gpx_string);
-    if (!result?.gpx) throw new Error('Invalid GPX: missing root <gpx> element');
+  const result = xml_parser.parse(gpx_string);
+  if (!result?.gpx) throw new Error('Invalid GPX: missing root <gpx> element');
 
-    const raw_gpx: RawGpx = result;
+  const raw_gpx: RawGpx = result;
 
-    return raw_gpx;
+  return raw_gpx;
 }
 
 export function raw_gpx_to_normalised_activity(raw_gpx: RawGpxRoot): Result<NormalizedActivity> {
@@ -76,13 +77,16 @@ export function raw_gpx_to_normalised_activity(raw_gpx: RawGpxRoot): Result<Norm
     points.push(segmentPoints);
   }
 
-  const hike_stats_result = generate_gpx_hike_stats(points)
-
+  const hike_stats_result = generate_gpx_hike_stats(points);
   if (!hike_stats_result.success) return hike_stats_result;
+
+  const bounds_result = generate_geo_bounds(points);
+  if (!bounds_result.success) return bounds_result;
 
   return {
     success: true,
     data: {
+      bounds: bounds_result.data,
       hikeStats: hike_stats_result.data,
       segments: points,
       suggestedName: raw_gpx.metadata?.name,
@@ -172,11 +176,10 @@ export function generate_gpx_hike_stats(track_seg: TrackPoint[][]): Result<HikeS
           min_hrt = Math.min(min_hrt, trk_pnt.heartRate);
           max_hrt = Math.max(max_hrt, trk_pnt.heartRate);
         }
-
-        prev_point = trk_pnt;
-        prev_elevation = current_elevation;
       }
 
+      prev_point = trk_pnt;
+      prev_elevation = current_elevation;
     }
   }
 
@@ -276,13 +279,17 @@ export function fit_messages_to_normalized_activity(fit_messges: FitMessages): R
   }
 
   const track_points = record_mesgs_to_tracksegs(fit_messges.recordMesgs);
-  const hike_stats_result = generate_fit_hike_stats(session, track_points);
 
+  const hike_stats_result = generate_fit_hike_stats(session, track_points);
   if (!hike_stats_result.success) return hike_stats_result;
+
+  const bounds_result = generate_geo_bounds(track_points);
+  if (!bounds_result.success) return bounds_result;
 
   return {
     success: true,
     data: {
+      bounds: bounds_result.data,
       segments: track_points,
       suggestedName: session.sport?.toString(),
       hikeStats: hike_stats_result.data,

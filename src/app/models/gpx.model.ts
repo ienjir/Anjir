@@ -1,8 +1,9 @@
-import { HikeStats } from '@models/hike.model';
+import { GeoBounds, HikeStats } from '@models/hike.model';
 import { TrackPoint } from './track.model';
 
 export interface NormalizedActivity {
   segments: TrackPoint[][];
+  bounds: GeoBounds,
   hikeStats: HikeStats;
   suggestedName?: string;
 }
