@@ -1,6 +1,7 @@
 import { environment } from "@environments/environment";
 import { RecordMesg } from "@garmin/fitsdk";
 import { RawGpxPoint } from "@models/gpx.model";
+import { GeoBounds } from "@models/hike.model";
 import { TrackPoint } from "@models/track.model";
 
 export function raw_gpx_point_to_track_point(raw_gpx_point: RawGpxPoint): Result<TrackPoint> {
@@ -114,4 +115,23 @@ export function record_mesgs_to_tracksegs(records: RecordMesg[]): TrackPoint[][]
 
 function fitSemicirclesToDegrees(semicircles: number): number {
   return (semicircles * 180) / (2 ** 31);
+}
+
+export function generate_geo_bounds(track_seg: TrackPoint[][]): Result<GeoBounds> {
+  const points = track_seg.flat();
+  if (points.length === 0) {
+    return { success: false, error: makeError("GPX_EMPTY_SEG") };
+  }
+
+  let minLat = Infinity, maxLat = -Infinity;
+  let minLon = Infinity, maxLon = -Infinity;
+
+  for (const { lat, lon } of points) {
+    if (lat < minLat) minLat = lat;
+    if (lat > maxLat) maxLat = lat;
+    if (lon < minLon) minLon = lon;
+    if (lon > maxLon) maxLon = lon;
+  }
+
+  return { success: true, data: { minLat, maxLat, minLon, maxLon } };
 }
