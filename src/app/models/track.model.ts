@@ -1,7 +1,7 @@
 export interface TrackData {
-  id?: number;
-  hikeId: number;
-  points: TrackPoint[];
+  id?: string;
+  hikeId: string;
+  segments: TrackPoint[][];
   paceSplits: PaceSplit[];
 }
 
@@ -19,5 +19,7 @@ export interface PaceSplit {
   splitNumber: number;
   durationSeconds: number;
   elevationDeltaMeters: number;
+  elevationGain: number;
+  elevationLoss: number
   distanceMeters: number;
 }

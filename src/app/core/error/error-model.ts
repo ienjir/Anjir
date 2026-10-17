@@ -60,7 +60,6 @@ const errorDefs = {
     message: 'No session messages on fit file',
     userMessage: 'err.fit.no_session_mesg'
   }
-
 } satisfies Record<string, { message: string; userMessage: string }>;
 
 type ErrorCode = keyof typeof errorDefs;
