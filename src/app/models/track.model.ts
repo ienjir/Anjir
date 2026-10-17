@@ -1,6 +1,7 @@
 export interface TrackData {
   id?: string;
   hikeId: string;
+  bounds: GeoBounds;
   segments: TrackPoint[][];
   paceSplits: PaceSplit[];
 }
@@ -22,4 +23,11 @@ export interface PaceSplit {
   elevationGain: number;
   elevationLoss: number
   distanceMeters: number;
+}
+
+export interface GeoBounds {
+  minLat: number;
+  maxLat: number;
+  minLon: number;
+  maxLon: number;
 }

@@ -24,7 +24,6 @@ export interface Hike {
   tags?: string[];
   source: HikeSource;
   stats: HikeStats;
-  bounds: GeoBounds;
   gpxFileId?: string;
   fitFileId?: string;
   trackId?: string;
@@ -51,11 +50,4 @@ export interface HikeStats {
   minCadence?: number;
   maxCadence?: number;
   averageTemperatureCelsius?: number;
-}
-
-export interface GeoBounds {
-  minLat: number;
-  maxLat: number;
-  minLon: number;
-  maxLon: number;
 }
