@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { environment } from '@environments/environment';
-import { Maintenance } from '@features/maintenance/maintenance';
+import { Maintenance } from './pages/maintenance/maintenance';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
