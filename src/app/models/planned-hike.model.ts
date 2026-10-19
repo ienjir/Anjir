@@ -1,18 +1,18 @@
 import { Difficulty } from './hike.model';
 
 export interface PlannedHike {
-  id: number;
+  id: string;
   name: string;
   description?: string;
   notes?: string;
   createdAt: Date;
   updatedAt: Date;
 
-  trackId?: number;
+  trackId?: string;
   waypoints: Waypoint[];
   stages?: Stage[];
 
-  linkedHikeId?: number;
+  linkedHikeId?: string;
   estimatedStats?: PlannedStats;
 }
 

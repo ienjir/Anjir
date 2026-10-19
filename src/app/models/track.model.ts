@@ -1,5 +1,4 @@
 export interface TrackData {
-  id?: string;
   hikeId: string;
   bounds: GeoBounds;
   segments: TrackPoint[][];

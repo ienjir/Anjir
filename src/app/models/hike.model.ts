@@ -24,8 +24,7 @@ export interface Hike {
   tags?: string[];
   source: HikeSource;
   stats: HikeStats;
-  gpxFileId?: string;
-  fitFileId?: string;
+  fileId?: string;
   trackId?: string;
   createdAt: Date;
   updatedAt?: Date;
