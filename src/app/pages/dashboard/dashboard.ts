@@ -4,7 +4,7 @@ import HikeMap from '@shared/hike-map/hike-map'
 @Component({
   selector: 'app-dashboard',
   imports: [
-    HikeMap
+    // HikeMap
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
