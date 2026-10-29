@@ -1,3 +1,4 @@
+import type { ErrorParams } from './define-errors';
 import type { ErrorCode } from './index';
 
 export type Result<T, E = AppError> = { success: true; data: T } | { success: false; error: E };
@@ -9,5 +10,6 @@ export interface ErrorDef {
 
 export interface AppError extends ErrorDef {
   code: ErrorCode;
+  params?: ErrorParams;
   cause?: unknown;
 }

@@ -6,8 +6,18 @@ export type DefinedErrors<P extends string, T extends Record<string, ErrorDef>> 
 
 export type CodesOf<T> = T[keyof T] extends { code: infer C } ? C : never;
 
-export function defineErrors<P extends string, T extends Record<string, ErrorDef>>(prefix: P, defs: T): DefinedErrors<P, T> {
+// Placeholder names in a message, e.g. 'line {line}, col {col}' -> 'line' | 'col'
+export type PlaceholdersOf<S extends string> =
+  S extends `${string}{${infer Name}}${infer Rest}` ? Name | PlaceholdersOf<Rest> : never;
+
+export type ErrorParams = Record<string, string | number>;
+
+export function defineErrors<P extends string, const T extends Record<string, ErrorDef>>(prefix: P, defs: T): DefinedErrors<P, T> {
   return Object.fromEntries(
     Object.entries(defs).map(([key, def]) => [key, { ...def, code: `${prefix}_${key}` }]),
   ) as DefinedErrors<P, T>;
+}
+
+export function interpolate(template: string, params: ErrorParams): string {
+  return template.replace(/\{(\w+)\}/g, (match, name: string) => (name in params ? String(params[name]) : match));
 }
