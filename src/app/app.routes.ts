@@ -8,31 +8,31 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () => import('./pages/dashboard/dashboard'),
+        loadComponent: () => import('./features/dashboard/dashboard'),
       },
       {
         path: 'dashboard',
-        loadComponent: () => import('./pages/dashboard/dashboard'),
+        loadComponent: () => import('./features/dashboard/dashboard'),
       },
       {
         path: 'touren',
-        loadComponent: () => import('./pages/hike-list/hike-list'),
+        loadComponent: () => import('./features/hike/pages/hike-list/hike-list'),
       },
       {
         path: 'touren/:id',
-        loadComponent: () => import('./pages/hike-detail/hike-detail'),
+        loadComponent: () => import('./features/hike/pages/hike-detail/hike-detail'),
       },
       {
         path: 'touren/:id/vergleich/:id',
-        loadComponent: () => import('./pages/hike-compare/hike-compare'),
+        loadComponent: () => import('./features/hike/pages/hike-compare/hike-compare'),
       },
       {
         path: 'neu',
-        loadComponent: () => import('./pages/hike-create/hike-create'),
+        loadComponent: () => import('./features/import/pages/hike-create/hike-create'),
       },
       {
         path: 'statistiken',
-        loadComponent: () => import('./pages/hike-create/hike-create'),
+        loadComponent: () => import('./features/import/pages/hike-create/hike-create'),
       },
     ],
   },

@@ -1,4 +1,4 @@
-import { Difficulty } from './hike.model';
+import { Difficulty } from "@hike/models/hike.model";
 
 export interface PlannedHike {
   id: string;

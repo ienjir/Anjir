@@ -1,8 +1,8 @@
 import Dexie, { type EntityTable } from 'dexie';
-import { Hike } from '../../models/hike.model';
-import { PlannedHike } from '../../models/planned-hike.model';
-import { RawFile } from '../../models/raw-file.model';
-import { TrackData } from '@models/track.model';
+import { Hike } from '../features/hike/models/hike.model';
+import { RawFile } from '../features/import/models/raw-file.model';
+import { PlannedHike } from '@planning/models/planned-hike.model';
+import { TrackData } from '@hike/models/track.model';
 
 const db = new Dexie('Anjir') as Dexie & {
   hikes: EntityTable<Hike, 'id'>;

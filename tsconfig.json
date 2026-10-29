@@ -15,18 +15,17 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@shared/*":       ["./src/app/shared/*"],
       "@core/*":         ["./src/app/core/*"],
-      "@features/*":     ["./src/app/pages/*"],
+      "@shared/*":       ["./src/app/shared/*"],
       "@environments/*": ["./src/environments/*"],
-      "@components/*":   ["./src/app/shared/components/*"],
-      "@layouts/*":      ["./src/app/layouts/*"],
-      "@interfaces/*":   ["./src/app/core/interfaces/*"],
-      "@interceptors/*": ["./src/app/core/interceptors/*"],
-      "@services/*":     ["./src/app/core/services/*"],
-      "@models/*":       ["./src/app/models/*"],
-      "@db/*":           ["./src/app/core/db/*"]
-    }
+
+      "@hike/*":         ["./src/app/features/hike/*"],
+      "@import/*":       ["./src/app/features/import/*"],
+      "@planning/*":     ["./src/app/features/planning/*"],
+      "@statistics/*":   ["./src/app/features/statistics/*"],
+      "@dashboard/*":    ["./src/app/features/dashboard/*"],
+      "@maintenance/*":  ["./src/app/features/maintenance/*"]
+}
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

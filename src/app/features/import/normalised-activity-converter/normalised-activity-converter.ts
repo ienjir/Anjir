@@ -1,11 +1,11 @@
 import { SyntaxValidator } from 'fast-xml-validator';
 import { XMLParser } from 'fast-xml-parser';
-import { RawGpxRoot, NormalizedActivity, RawGpx } from '@models/gpx.model';
-import { HikeStats } from '@models/hike.model';
-import { TrackPoint } from '@models/track.model';
 import { environment } from '@environments/environment';
 import { Decoder, Stream, FitMessages, SessionMesg } from '@garmin/fitsdk';
-import { generate_geo_bounds, haversine_distance, raw_gpx_point_to_track_point, record_mesgs_to_tracksegs, smoothElevation } from '@shared/normalised-activity-converter/normalised-activity-converter-helper';
+import { TrackPoint } from '@hike/models/track.model';
+import { NormalizedActivity, RawGpx, RawGpxRoot } from '@import/models/gpx.model';
+import { generate_geo_bounds, haversine_distance, raw_gpx_point_to_track_point, record_mesgs_to_tracksegs, smoothElevation } from '@import/normalised-activity-converter/normalised-activity-converter-helper';
+import { HikeStats } from '@hike/models/hike.model';
 
 
 export function gpx_string_to_raw_gpx(gpx_string: string): RawGpx {

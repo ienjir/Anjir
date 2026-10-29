@@ -1,8 +1,8 @@
 import { max } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, afterNextRender, Input, input } from '@angular/core';
 import { environment } from '@environments/environment';
-import { TrackData } from '@models/track.model';
 import { Map } from 'maplibre-gl';
+import { TrackData } from '@hike/models/track.model';
 
 @Component({
   selector: 'app-hike-map',

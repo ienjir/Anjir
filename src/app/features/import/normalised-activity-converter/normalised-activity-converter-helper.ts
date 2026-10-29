@@ -1,7 +1,7 @@
 import { environment } from "@environments/environment";
 import { RecordMesg } from "@garmin/fitsdk";
-import { RawGpxPoint } from "@models/gpx.model";
-import { GeoBounds, TrackPoint } from "@models/track.model";
+import { GeoBounds, TrackPoint } from "@hike/models/track.model";
+import { RawGpxPoint } from "@import/models/gpx.model";
 
 export function raw_gpx_point_to_track_point(raw_gpx_point: RawGpxPoint): Result<TrackPoint> {
   if (raw_gpx_point === undefined) {

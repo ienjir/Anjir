@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { db } from '@core/db/db';
-import { Hike } from '@models/hike.model';
-import { RawFile } from '@models/raw-file.model';
-import { TrackData } from '@models/track.model';
+import { db } from '@core/db';
+import { Hike } from '@hike/models/hike.model';
+import { TrackData } from '@hike/models/track.model';
+import { RawFile } from '@import/models/raw-file.model';
 
 @Injectable({
   providedIn: 'root',
