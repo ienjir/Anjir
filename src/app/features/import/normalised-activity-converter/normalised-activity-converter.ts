@@ -1,3 +1,4 @@
+import { makeError, Result, FitError, GpxError } from '@core/error';
 import { SyntaxValidator } from 'fast-xml-validator';
 import { XMLParser } from 'fast-xml-parser';
 import { environment } from '@environments/environment';
@@ -33,7 +34,7 @@ export function raw_gpx_to_normalised_activity(raw_gpx: RawGpxRoot): Result<Norm
   if (raw_gpx.trk == undefined || raw_gpx.trk.length > 1) {
     return {
       success: false,
-      error: makeError('GPX_NO_ROUTES')
+      error: makeError(GpxError.NO_ROUTES)
     };
   }
 
@@ -41,21 +42,21 @@ export function raw_gpx_to_normalised_activity(raw_gpx: RawGpxRoot): Result<Norm
   if (raw_gpx.trk[0].trkseg == undefined || raw_gpx.trk[0].trkseg?.length == 0) {
     return {
       success: false,
-      error: makeError('GPX_NO_TRKSEG')
+      error: makeError(GpxError.NO_TRKSEG)
     };
   }
 
   if (raw_gpx.trk[0].trkseg[0].trkpt == undefined || raw_gpx.trk[0].trkseg[0].trkpt.length == 0) {
     return {
       success: false,
-      error: makeError('GPX_NO_TRKPNT')
+      error: makeError(GpxError.NO_TRKPNT)
     };
   }
 
   if (raw_gpx.trk[0].trkseg.some((seg) => seg.trkpt == undefined || seg.trkpt.length === 0)) {
     return {
       success: false,
-      error: makeError('GPX_EMPTY_SEG')
+      error: makeError(GpxError.EMPTY_SEG)
     };
   }
 
@@ -186,7 +187,7 @@ export function generate_gpx_hike_stats(track_seg: TrackPoint[][]): Result<HikeS
   if (distance_meters === 0) {
     return {
       success: false,
-      error: makeError('GPX_NO_VLD_TRK_DTA')
+      error: makeError(GpxError.NO_VLD_TRK_DTA)
     };
   }
 
@@ -234,14 +235,14 @@ export async function decode_fit(file: File): Promise<Result<FitMessages>> {
   if (!decoder.isFIT()) {
     return {
       success: false,
-      error: makeError('FIT_NOT_VLD'),
+      error: makeError(FitError.NOT_VLD),
     }
   }
 
   if (!decoder.checkIntegrity()) {
     return {
       success: false,
-      error: makeError('FIT_NOT_VLD'),
+      error: makeError(FitError.NOT_VLD),
     }
   }
 
@@ -257,7 +258,7 @@ export async function decode_fit(file: File): Promise<Result<FitMessages>> {
     console.error(errors)
     return {
       success: false,
-      error: makeError('FIT_READ')
+      error: makeError(FitError.READ)
     }
   }
 
@@ -270,12 +271,12 @@ export async function decode_fit(file: File): Promise<Result<FitMessages>> {
 
 export function fit_messages_to_normalized_activity(fit_messges: FitMessages): Result<NormalizedActivity> {
   if (!fit_messges.recordMesgs || fit_messges.recordMesgs.length === 0) {
-    return { success: false, error: makeError('FIT_NO_RECORD_MESG') };
+    return { success: false, error: makeError(FitError.NO_RECORD_MESG) };
   }
 
   const session = fit_messges.sessionMesgs?.[0];
   if (!session) {
-    return { success: false, error: makeError('FIT_NO_SESSION_MESG') };
+    return { success: false, error: makeError(FitError.NO_SESSION_MESG) };
   }
 
   const track_points = record_mesgs_to_tracksegs(fit_messges.recordMesgs);
@@ -303,7 +304,7 @@ export function generate_fit_hike_stats(session_mesg: SessionMesg, track_seg: Tr
   if (distance_meters === 0) {
     return {
       success: false,
-      error: makeError('FIT_NO_DISTANCE_DATA')
+      error: makeError(FitError.NO_DISTANCE_DATA)
     };
   }
 

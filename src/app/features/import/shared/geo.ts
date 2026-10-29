@@ -1,3 +1,4 @@
+import { makeError, Result, GpxError } from '@core/error';
 import { GeoBounds, TrackPoint } from '@hike/models/track.model';
 
 const EARTH_RADIUS_METERS = 6_371_000;
@@ -30,7 +31,7 @@ function to_radians(degrees: number): number {
 export function generate_geo_bounds(track_seg: TrackPoint[][]): Result<GeoBounds> {
   const points = track_seg.flat();
   if (points.length === 0) {
-    return { success: false, error: makeError('GPX_EMPTY_SEG') };
+    return { success: false, error: makeError(GpxError.EMPTY_SEG) };
   }
 
   let minLat = Infinity, maxLat = -Infinity;

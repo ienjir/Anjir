@@ -1,3 +1,4 @@
+import { makeError, Result, FitError } from '@core/error';
 import { environment } from '@environments/environment';
 import { Decoder, Stream, FitMessages, RecordMesg, SessionMesg } from '@garmin/fitsdk';
 import { HikeStats } from '@hike/models/hike.model';
@@ -19,7 +20,7 @@ export async function decode_fit(file: File): Promise<Result<FitMessages>> {
   const decoder = new Decoder(stream);
 
   if (!decoder.isFIT() || !decoder.checkIntegrity()) {
-    return { success: false, error: makeError('FIT_NOT_VLD') };
+    return { success: false, error: makeError(FitError.NOT_VLD) };
   }
 
   const { messages, errors } = decoder.read({
@@ -32,7 +33,7 @@ export async function decode_fit(file: File): Promise<Result<FitMessages>> {
 
   if (errors.length > 0) {
     console.error(errors);
-    return { success: false, error: makeError('FIT_READ') };
+    return { success: false, error: makeError(FitError.READ) };
   }
 
   return { success: true, data: messages };
@@ -40,12 +41,12 @@ export async function decode_fit(file: File): Promise<Result<FitMessages>> {
 
 export function fit_messages_to_normalized_activity(fit_messages: FitMessages): Result<NormalizedActivity> {
   if (!fit_messages.recordMesgs || fit_messages.recordMesgs.length === 0) {
-    return { success: false, error: makeError('FIT_NO_RECORD_MESG') };
+    return { success: false, error: makeError(FitError.NO_RECORD_MESG) };
   }
 
   const session = fit_messages.sessionMesgs?.[0];
   if (!session) {
-    return { success: false, error: makeError('FIT_NO_SESSION_MESG') };
+    return { success: false, error: makeError(FitError.NO_SESSION_MESG) };
   }
 
   const track_points = record_mesgs_to_tracksegs(fit_messages.recordMesgs);
@@ -114,7 +115,7 @@ export function generate_fit_hike_stats(session_mesg: SessionMesg, track_seg: Tr
   const distance_meters = session_mesg.totalDistance ?? 0;
 
   if (distance_meters === 0) {
-    return { success: false, error: makeError('FIT_NO_DISTANCE_DATA') };
+    return { success: false, error: makeError(FitError.NO_DISTANCE_DATA) };
   }
 
   const total_seconds = session_mesg.totalElapsedTime ?? 0;
