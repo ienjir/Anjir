@@ -1,3 +1,4 @@
+import { makeError, Result, GpxError } from "@core/error";
 import { environment } from "@environments/environment";
 import { RecordMesg } from "@garmin/fitsdk";
 import { GeoBounds, TrackPoint } from "@hike/models/track.model";
@@ -7,14 +8,14 @@ export function raw_gpx_point_to_track_point(raw_gpx_point: RawGpxPoint): Result
   if (raw_gpx_point === undefined) {
     return {
       success: false,
-      error: makeError('GPX_UND_TRKPNT')
+      error: makeError(GpxError.UND_TRKPNT)
     }
   }
 
   if (raw_gpx_point.time === undefined) {
     return {
       success: false,
-      error: makeError('GPX_NO_TMPSTMP')
+      error: makeError(GpxError.NO_TMPSTMP)
     }
   }
 
@@ -119,7 +120,7 @@ function fitSemicirclesToDegrees(semicircles: number): number {
 export function generate_geo_bounds(track_seg: TrackPoint[][]): Result<GeoBounds> {
   const points = track_seg.flat();
   if (points.length === 0) {
-    return { success: false, error: makeError("GPX_EMPTY_SEG") };
+    return { success: false, error: makeError(GpxError.EMPTY_SEG) };
   }
 
   let minLat = Infinity, maxLat = -Infinity;
