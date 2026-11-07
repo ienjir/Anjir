@@ -29,4 +29,8 @@ export const GpxError = defineErrors('GPX', {
     message: 'No valid track data found',
     userMessage: 'err.gpx_no_valid_track_data'
   },
+  MALFORMED_XML: {
+    message: 'Malformed GPX on line {line}, col {col}: {reason}',
+    userMessage: 'err.gpx.'
+  }
 });

@@ -10,7 +10,8 @@
       "gpx_no_track_points_on_trackseg": "Die GPX Datei hat keine Trackpoints auf den Tracksegmente",
       "gpx_trackpoint_is_undefined": "Ein Trackpoint ist undefiniert",
       "gpx_no_timestamppx_no_timestamp": "Auf einem Trackpoint ist kein Zeitangabe",
-      "gpx_no_valid_track_data": "Keine valide Daten um die Wander-Statistiken zu berechnen"
+      "gpx_no_valid_track_data": "Keine valide Daten um die Wander-Statistiken zu berechnen",
+      "malformed_xml": "Die GPX Datei ist beschädigt auf Zeile {line}, {col}. Grund: {reason}"
     },
     "fit": {
       "not_valid": "Die Fit Datei ist nicht valide",
