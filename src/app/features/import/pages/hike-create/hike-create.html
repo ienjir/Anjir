@@ -1,22 +1,25 @@
-<p>hike-create works!</p>
 <form (submit)="submit(); $event.preventDefault()">
   <label for="file">Choose a file</label>
 
-  <input
-    id="file"
-    type="file"
-    (change)="onFileSelected($event)"
-  />
+  <div>
+    <input id="file" type="file" accept=".gpx,.fit,application/gpx+xml,application/vnd.ant.fit" (change)="onFileSelected($event)" />
+    @if (fileError() !== null) {
+    <label for="file">{{ fileError() | translate }}  .gpx, .fit</label>
+    }
+  </div>
+
 
   @if (model().file; as file) {
-    <div>
-      <p>Filename: {{ file.name }}</p>
-      <p>Size: {{ (file.size / 1024).toFixed(2) }} KB</p>
-      <p>Type: {{ file.type || 'Unknown' }}</p>
-    </div>
+  <div>
+    <p>Filename: {{ file.name }}</p>
+    <p>Size: {{ (file.size / 1024).toFixed(2) }} KB</p>
+    <p>Type: {{ file.type || 'Unknown' }}</p>
+  </div>
   }
 
   <button type="submit" [disabled]="!model().file">
     Upload
   </button>
-</form>
+  </form>
+
+  <p>{{ normalisedActivity() }}</p>

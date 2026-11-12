@@ -1,6 +1,9 @@
 {
   "gpx": {
-    "unnamed_hike": "Unnamed hike"
+    "unnamed_hike": "Unbenannte Wanderung"
+  },
+  "import": {
+    "only_certain_file_types_allowed": "Es dürfen nur folgende Dateien hochgeladen werden:"
   },
   "err": {
     "gpx": {

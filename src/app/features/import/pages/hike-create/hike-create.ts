@@ -1,24 +1,51 @@
+import { Result } from '@core/error';
 import { Component, signal } from '@angular/core';
+import { TranslatePipe } from "@ngx-translate/core";
 import { form, FormField } from '@angular/forms/signals';
 import { read } from 'node:fs';
+import { NormalizedActivity } from '@import/models/gpx.model';
+import { parse_gpx } from '@import/gpx/gpx-converter';
+import { Decoder, Stream } from '@garmin/fitsdk';
+import { parse_fit } from '@import/fit/fit-converter';
+
+type ActivityFileType = 'gpx' | 'fit';
 
 @Component({
   selector: 'app-hike-create',
   imports: [
+    TranslatePipe
   ],
   templateUrl: './hike-create.html',
   styleUrl: './hike-create.scss',
 })
 export default class HikeCreate {
+  fileError = signal<string | null>(null);
+  normalisedActivity = signal<NormalizedActivity | null>(null);
+  GPX_ROOT = /^\s*(?:<\?[\s\S]*?\?>\s*|<!--[\s\S]*?-->\s*|<!DOCTYPE[^>]*>\s*)*<gpx[\s>]/i;
+
+
+  private readonly genericMimeTypes = ['', 'application/octet-stream'];
+  private readonly allowedMimeTypes: Record<string, string[]> = {
+    gpx: ['application/gpx+xml', 'application/xml', 'text/xml', 'gpx'],
+    fit: ['application/vnd.ant.fit', 'application/fit', 'fit'],
+  };
+
   model = signal<{ file: File | null }>({
     file: null,
   });
 
-  fileForm = form(this.model);
-
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.item(0) ?? null;
+
+    if (file === null) {
+      return
+    }
+
+    if (this.detectFileType(file) === null) {
+      this.fileError.set(`import.only_certain_file_types_allowed`);
+      return;
+    }
 
     this.model.update(value => ({
       ...value,
@@ -26,26 +53,43 @@ export default class HikeCreate {
     }));
   }
 
-  submit(): void {
+  async submit() {
     const file = this.model().file;
+    const fileType = file ? await this.detectFileType(file) : null;
 
-    if (!file || file.type !== "application/gpx+xml") {
-      console.error("Only GPX");
+    if (!file || !fileType) {
+      console.error('Only GPX or FIT files are allowed');
       return;
     }
 
-    console.log('Selected file:', file);
-    console.log('Filename:', file.name);
-    console.log('Size:', file.size);
-    console.log('MIME type:', file.type);
+    let normalizedActivityResult: Result<NormalizedActivity>;
+    switch (fileType) {
+      case 'gpx':
+        normalizedActivityResult = parse_gpx("PLEASE FIX ME", file);
+        break;
+      case 'fit':
+        normalizedActivityResult = await parse_fit(file);
+        break;
+    }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      console.log("Loading");
-    };
-    reader.onerror = () => {
-      console.error("Load error")
-    };
-    reader.readAsText(file);
+    if (!normalizedActivityResult.success) {
+      this.fileError.set("PLEASE CHANGE: Normalised activtiy result is no succes");
+      return
+    }
+
+    this.normalisedActivity.set(normalizedActivityResult.data);
+  }
+
+
+  private async detectFileType(file: File): Promise<ActivityFileType | null> {
+    const head = await file.slice(0, 1024).arrayBuffer();
+
+    if (Decoder.isFIT(Stream.fromArrayBuffer(head))) return 'fit';
+
+    const text = new TextDecoder().decode(head);
+    console.log(JSON.stringify(text.slice(0, 300)), this.GPX_ROOT.test(text));
+
+    if (this.GPX_ROOT.test(text)) return 'gpx';
+    return null;
   }
 }

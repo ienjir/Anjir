@@ -6,7 +6,6 @@ import { TrackPoint } from '@hike/models/track.model';
 import { NormalizedActivity } from '@import/models/gpx.model';
 import { generate_geo_bounds, haversine_distance } from '@import/shared/geo';
 
-/** Entry point: FIT file -> NormalizedActivity. */
 export async function parse_fit(file: File): Promise<Result<NormalizedActivity>> {
   const decoded = await decode_fit(file);
   if (!decoded.success) return decoded;

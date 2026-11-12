@@ -1,7 +1,5 @@
-import { XMLValidator } from './../../../../../node_modules/fast-xml-parser/src/fxp.d';
 import { makeError, Result, GpxError } from '@core/error';
-import { SyntaxValidator } from 'fast-xml-validator';
-import { XMLParser } from 'fast-xml-parser';
+import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import { environment } from '@environments/environment';
 import { HikeStats } from '@hike/models/hike.model';
 import { TrackPoint } from '@hike/models/track.model';
@@ -31,8 +29,7 @@ const gpxParser = new XMLParser({
     !isAttribute && ARRAY_TAGS.has(tagName),
 });
 
-// Entry point: GPX text -> NormalizedActivity. RawGpx never leaves this file
-export function parse_gpx(gpx_string: string): Result<NormalizedActivity> {
+export function parse_gpx(gpx_string: string, gpx_file: File): Result<NormalizedActivity> {
   const raw_gpx = gpx_string_to_raw_gpx(gpx_string);
   if (raw_gpx.success === false) {
     return { success: false, error: raw_gpx.error }
