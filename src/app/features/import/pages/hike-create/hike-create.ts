@@ -2,7 +2,6 @@ import { Result } from '@core/error';
 import { Component, signal } from '@angular/core';
 import { TranslatePipe } from "@ngx-translate/core";
 import { form, FormField } from '@angular/forms/signals';
-import { read } from 'node:fs';
 import { NormalizedActivity } from '@import/models/gpx.model';
 import { parse_gpx } from '@import/gpx/gpx-converter';
 import { Decoder, Stream } from '@garmin/fitsdk';
@@ -65,7 +64,8 @@ export default class HikeCreate {
     let normalizedActivityResult: Result<NormalizedActivity>;
     switch (fileType) {
       case 'gpx':
-        normalizedActivityResult = parse_gpx("PLEASE FIX ME", file);
+        normalizedActivityResult = await parse_gpx(file);
+        console.log("End");
         break;
       case 'fit':
         normalizedActivityResult = await parse_fit(file);
@@ -78,6 +78,7 @@ export default class HikeCreate {
     }
 
     this.normalisedActivity.set(normalizedActivityResult.data);
+    console.log(this.normalisedActivity())
   }
 
 
@@ -87,7 +88,6 @@ export default class HikeCreate {
     if (Decoder.isFIT(Stream.fromArrayBuffer(head))) return 'fit';
 
     const text = new TextDecoder().decode(head);
-    console.log(JSON.stringify(text.slice(0, 300)), this.GPX_ROOT.test(text));
 
     if (this.GPX_ROOT.test(text)) return 'gpx';
     return null;
