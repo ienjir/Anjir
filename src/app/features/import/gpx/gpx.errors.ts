@@ -1,9 +1,17 @@
 import { defineErrors } from '@core/error/define-errors';
 
 export const GpxError = defineErrors('GPX', {
-  NO_ROUTES: {
-    message: 'GPX file contains no <rte> elements',
-    userMessage: 'err.gpx.gpx_none_or_too_many_tracks',
+  NO_GPX_ROOT: {
+    message: 'XML file has no <gpx> root element',
+    userMessage: 'err.gpx.no_gpx_root',
+  },
+  NO_TRACKS: {
+    message: 'GPX file contains no <trk> elements',
+    userMessage: 'err.gpx.no_tracks',
+  },
+  MULTIPLE_TRACKS: {
+    message: 'GPX file contains {count} <trk> elements, only 1 is supported',
+    userMessage: 'err.gpx.multiple_tracks',
   },
   NO_TRKSEG: {
     message: 'Track contains no <trkseg> elements',
@@ -31,6 +39,10 @@ export const GpxError = defineErrors('GPX', {
   },
   MALFORMED_XML: {
     message: 'Malformed GPX on line {line}, col {col}: {reason}',
-    userMessage: 'err.gpx.'
+    userMessage: 'err.gpx.malformed_xml'
+  },
+  FAILED_TO_READ_FILE: {
+    message: 'Failed to read file',
+    userMessage: 'err.gpx'
   }
 });

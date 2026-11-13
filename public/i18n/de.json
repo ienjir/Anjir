@@ -9,6 +9,9 @@
     "gpx": {
       "gpx_none_or_too_many_routes": "Die GPX Datei hat entweder keine oder mehr als 1 Route",
       "gpx_none_or_too_many_tracks": "Die GPX Datei hat entweder keine oder mehr als 1 Track",
+      "no_gpx_root": "Die Datei ist keine GPX Datei (kein <gpx> Element gefunden)",
+      "no_tracks": "Die GPX Datei enthält keinen Track",
+      "multiple_tracks": "Die GPX Datei enthält {count} Tracks, es wird nur 1 unterstützt",
       "gpx_no_track_seg_on_track": "Die GPX Datei hat keine Tracksegmente",
       "gpx_no_track_points_on_trackseg": "Die GPX Datei hat keine Trackpoints auf den Tracksegmente",
       "gpx_trackpoint_is_undefined": "Ein Trackpoint ist undefiniert",
